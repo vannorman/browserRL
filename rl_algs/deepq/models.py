@@ -52,7 +52,7 @@ def bias_variable(shape):
 
 
 # make input placeholders
-def create_input_placeholders(obs_dim, n_acts, scope):
+def create_input_placeholders(obs_dim, scope):
     with tf.variable_scope(scope):
         obs_ph = tf.placeholder(shape=(None, *obs_dim), dtype=tf.float32, name="obs_ph_"+scope)
     return {'obs_ph': obs_ph}
@@ -87,8 +87,8 @@ class Model:
         set_global_seeds(seed)
 
         # create placeholders for the input data for the current and next timesteps
-        cur_input = create_input_placeholders(obs_dim, n_acts, 'cur_input')
-        next_input = create_input_placeholders(obs_dim, n_acts, 'next_input')
+        cur_input = create_input_placeholders(obs_dim, 'cur_input')
+        next_input = create_input_placeholders(obs_dim, 'next_input')
 
         # create placeholders for the output data for the current timestep
         cur_output = create_output_placeholders(n_acts, 'cur_out')
@@ -148,6 +148,7 @@ class Model:
 
         self.save = functools.partial(U.save_variables, sess=sess)
         self.load = functools.partial(U.load_variables, sess=sess)
+        print("Initialized Model")
 
     # Initialize the parameters and copy them to the target network.
     def initialize_training(self):
@@ -176,7 +177,7 @@ def get_model(obs_in,
 
         if dueling:
             with tf.variable_scope("state_value"):
-                state_out = conv_out
+                state_out = obs_out
                 for hidden in hiddens:
                     state_out = tf.contrib.layers.fully_connected(state_out, num_outputs=hidden, activation_fn=None)
                     if layer_norm:

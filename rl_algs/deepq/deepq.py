@@ -2,8 +2,10 @@ import time
 
 import numpy as np
 
-from rl_algs.deepq.replay_buffer import ReplayBuffer
-from rl_algs.deepq.models import Model
+from replay_buffer import ReplayBuffer
+from models import Model
+
+print("hello")
 
 
 def createReplayBuffer(obs_dim, n_acts, buffer_size=50000):
@@ -16,12 +18,10 @@ class DQN:
                  n_acts,
                  lr=1e-4,
                  gamma=0.99,
-                 final_epsilon=0.02,
                  load_path=None,
                  seed=None):
         if seed is None:
             seed = int(time.time()*1000000) - int(time.time())*1000000
-        self.epsilon_schedule = getEpsilonSchedule(total_timesteps, final_epsilon)
         self.train_count = 0
 
         self.model = Model(obs_dim, n_acts, seed, lr, gamma)
@@ -32,6 +32,7 @@ class DQN:
             print("Loaded model from " + load_path + ".")
 
         self.model.initialize_training()
+        print("Initialized DQN")
 
 
     def saveModel(self, model_path=None):
@@ -68,6 +69,24 @@ class DQN:
                         old_model=None):
         self.accept_data(batch)
         for i in range(trainings_per_request):
-            updated_model = train(batch_size, target_update_interval)
+            updated_model = self.train(batch_size, target_update_interval)
+        
+        # https://js.tensorflow.org/tutorials/import-saved-model.html
+        
+        
         return updated_model
+
+fake_data_batch_size = 100
+fake_data_obs_dim = 12
+fake_data_n_acts = 4
+my_dqn = DQN([fake_data_obs_dim], fake_data_n_acts)
+
+fake_data = [{'obs': np.random.rand(fake_data_obs_dim),
+              'act': np.random.randint(2, size=fake_data_n_acts),
+              'rew': np.random.rand(1),
+              'done': np.random.randint(2)
+            } for i in range(fake_data_batch_size)]
+updated_model = my_dqn.store_and_train(fake_data)
+
+print(updated_model)
 

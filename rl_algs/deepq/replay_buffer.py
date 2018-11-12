@@ -16,6 +16,7 @@ class ReplayBuffer:
         self.total_count = 0
         self.size = 0
         self.max_size = size
+        print("Initialized ReplayBuffer")
 
     def store(self, obs, act, rew, done):
         self.obs_buf[self.ptr] = obs
@@ -25,11 +26,10 @@ class ReplayBuffer:
         self.ptr = (self.ptr+1) % self.max_size
         self.size = min(self.size+1, self.max_size)
         self.total_count += 1
-        self.update_stats(rew)
 
     def store_batch(self, batch):
-        for d in batch:
-            self.store(d['obs'], d['act'], d['rew'], d['done'])
+        for data in batch:
+            self.store(data['obs'], data['act'], data['rew'], data['done'])
 
     def choose_batch_idxs(self, batch_size, include_most_recent):
         idxs = np.random.choice(self.size, batch_size)
