@@ -1,0 +1,6 @@
+1. verify that data sent from js to python via websockets is in the right format to train
+2. verify that training algorithm is working correctly / converges to a better solution
+3. Export trained model to a file (via the stack overflow - link) so that tensorflow-js can load it from the link and unpack it
+4. Get tensorflow js in the browser to implement current trained model to make decisions (and use a pretrained model for starting from) for the game agent
+5. Profit!
+6. 5 P in vim repeats the action 5 times!

@@ -1,0 +1,44 @@
+{% load static %}
+	<head>
+	    <title>Lunar Lander</title>
+	<meta name="google-site-verification" content="KPrCTIkFg3RCIWPoYvQO3QBnFcEqKflrEQI_6ztrwzE" />
+	{% block styles %}
+	    <link rel="stylesheet" href="/static/css/lunar.css">
+	{% endblock %}
+
+	{% block scripts %}
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.13.3/dist/tf.min.js"> </script>
+        <script src="/static/js/jquery-1.11.0.min.js"></script>
+        <script src="/static/js/lunar.js"></script>
+	{% endblock %}
+	</head>
+<body>
+	</body>
+{% block content %}
+<div id="content">
+    <div id="lander">E<br>S<br>A</div>
+	<div id="ground"></div>
+	<div id="platform"></div>
+
+	<div id="gameover"></div>
+
+	<div id="controls">
+		<span>use W A S D to control the space ship</span>
+	</div>
+	<div id="fuel"></div>
+
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
